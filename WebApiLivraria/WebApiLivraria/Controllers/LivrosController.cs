@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApiLivraria.Dominio;
 
 namespace WebApiLivraria.Controllers
@@ -28,10 +29,13 @@ namespace WebApiLivraria.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Livro livro)
         {
-            String key = livro.ISBN;
+            // Analisa o objeto informado
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            if (key == null || key.Length == 0)
-                return BadRequest("ISBN nao informado");
+            String key = livro.ISBN;
 
             Livro livroPersistido = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
             if (livroPersistido != null)
@@ -40,7 +44,50 @@ namespace WebApiLivraria.Controllers
             this.livroDdContext.Livros.Add(livro);
             this.livroDdContext.SaveChangesAsync();
 
-            return Created(livro);
+            /**
+             * O primeiro parametro corresponde a uma URI de retorno
+             * Ja o segundo e o Bean propriamente dito
+             */
+            return Created($"?key={livro.ISBN}", livro);            
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody]Livro livro)
+        {
+            // Analisa o objeto informado
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            String key = livro.ISBN;
+
+            Livro livroPersistido = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
+            if (livroPersistido == null)
+                return NotFound("Nao existe livro cadastrado para o ISBN informado [" + key + "]");
+
+            /**
+             * A entidade ja existe no Banco, Portanto ja estah (tracked) "amarrado" no
+             * contexto de persistencia
+             */
+            this.livroDdContext.Entry(livro).State = EntityState.Modified;
+            this.livroDdContext.SaveChangesAsync();
+
+            return Updated(livro);
+        }
+
+        public IActionResult Delete([FromODataUri] String key)
+        {
+            var livro = this.livroDdContext.Livros.FindAsync(key);
+            if (livro == null)
+            {
+                return NotFound("Livro nao encontrado para o ISBN inforamado");
+            }
+
+
+            this.livroDdContext.Remove(livro);
+            this.livroDdContext.SaveChangesAsync();
+            return StatusCode((int)System.Net.HttpStatusCode.NoContent);
         }
     }
 }

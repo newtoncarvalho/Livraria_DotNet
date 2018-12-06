@@ -10,5 +10,13 @@ namespace WebApiLivraria.Dominio
     {
         public DbSet<Livro> Livros { get; set; }
 
+        public LivroDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        protected LivroDbContext()
+        {
+        }
+
     }
 }

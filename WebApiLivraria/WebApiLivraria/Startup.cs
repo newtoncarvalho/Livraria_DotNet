@@ -57,7 +57,7 @@ namespace WebApiLivraria
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             /**
              * Configurando OData endpoint
@@ -70,7 +70,8 @@ namespace WebApiLivraria
         private static void ConfigureODataRoutes(Microsoft.AspNetCore.Routing.IRouteBuilder routes)
         {
             var model = GetEdmModel();
-            routes.MapODataServiceRoute("ODataRoute", "odata", model);
+            //routes.MapODataServiceRoute("ODataRoute", "odata", model);
+            routes.MapODataServiceRoute("ODataRoute", "webapilivraria", model);
             routes.Filter(QueryOptionSetting.Allowed);
             routes.OrderBy();
             routes.Count();
