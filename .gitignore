@@ -1,0 +1,7 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/WebApiLivraria/WebApiLivraria/obj
+/WebApiLivraria/.vs/WebApiLivraria
+/WebApiLivraria/WebApiLivraria/bin/Debug/netcoreapp2.1
