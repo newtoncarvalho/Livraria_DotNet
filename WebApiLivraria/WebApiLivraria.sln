@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiLivraria", "WebApiLivraria\WebApiLivraria.csproj", "{8955D108-5005-487C-B039-44E8D8E6F886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiLivrariaTests", "WebApiLivrariaTests\WebApiLivrariaTests.csproj", "{62178770-7EE7-4067-81B7-28838D914ED7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiLivrariaTest", "WebApiLivrariaTest\WebApiLivrariaTest.csproj", "{FDB1FFB0-E3D1-4131-B468-EC2C221C70D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{8955D108-5005-487C-B039-44E8D8E6F886}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8955D108-5005-487C-B039-44E8D8E6F886}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8955D108-5005-487C-B039-44E8D8E6F886}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62178770-7EE7-4067-81B7-28838D914ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62178770-7EE7-4067-81B7-28838D914ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62178770-7EE7-4067-81B7-28838D914ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62178770-7EE7-4067-81B7-28838D914ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB1FFB0-E3D1-4131-B468-EC2C221C70D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB1FFB0-E3D1-4131-B468-EC2C221C70D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB1FFB0-E3D1-4131-B468-EC2C221C70D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB1FFB0-E3D1-4131-B468-EC2C221C70D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

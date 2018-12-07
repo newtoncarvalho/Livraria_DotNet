@@ -17,6 +17,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.OData.Edm;
 using Microsoft.AspNet.OData.Query;
+using Microsoft.OData.UriParser;
+using Newtonsoft.Json.Serialization;
 
 namespace WebApiLivraria
 {
@@ -43,6 +45,9 @@ namespace WebApiLivraria
             services.AddOData();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton(sp => new ODataUriResolver { EnableCaseInsensitive = true });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
