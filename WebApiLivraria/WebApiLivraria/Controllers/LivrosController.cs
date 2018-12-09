@@ -26,6 +26,20 @@ namespace WebApiLivraria.Controllers
             return query;
         }
 
+        [HttpGet]
+        public IActionResult Get([FromODataUri] String key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return BadRequest("ISBN parametro obrigatorio");
+
+            Livro livroPersistido = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
+            if (livroPersistido == null)
+                return NotFound("Nao existe livro cadastrado para o ISBN informado [" + key + "]");
+
+            return Ok(livroPersistido);
+        }
+
+
         [HttpPost]
         public IActionResult Post([FromBody]Livro livro)
         {
