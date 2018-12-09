@@ -31,22 +31,29 @@ namespace WebApiLivraria
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /*
+         * This method gets called by the runtime. Use this method to add services to the container.       
+         * 
+         * Aqui sao realizada as injecoes de dependencia no estilo "Convention Over Configuration"
+         */
         public void ConfigureServices(IServiceCollection services)
         {
-            // Realizando injecoes de dependencia
-
-            // Usando Sintaxe similar ao Lambada expression do Java
-            // Vamos especificar o tipo de provedor de banco de dados
+            /**
+             * Usando Sintaxe similar ao Lambada expression do Java
+             * Vamos especificar o tipo de provedor de banco de dados
+             * Neste caso, usaremos apenas o Banco de Dados em Memória
+             */
             services.AddDbContext<LivroDbContext>(options =>
                 options.UseInMemoryDatabase("LivrariaDB"));
 
             // Injetando dependencia do framework OData
             services.AddOData();
 
+            // Injetando dependencia do framework AspNet MVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton(sp => new ODataUriResolver { EnableCaseInsensitive = true });
+            // URIs sem caso sensitivo
+            services.AddSingleton(sp => new ODataUriResolver {EnableCaseInsensitive = true});
             
         }
 
@@ -75,12 +82,11 @@ namespace WebApiLivraria
         private static void ConfigureODataRoutes(Microsoft.AspNetCore.Routing.IRouteBuilder routes)
         {
             var model = GetEdmModel();
-            //routes.MapODataServiceRoute("ODataRoute", "odata", model);
             routes.MapODataServiceRoute("ODataRoute", "webapilivraria", model);
-            routes.Filter(QueryOptionSetting.Allowed);
-            routes.OrderBy();
-            routes.Count();
-            routes.Select();
+            routes.Filter(QueryOptionSetting.Allowed); // Permite o comando $filter
+            routes.OrderBy(); // Permite o comando $orderby
+            routes.Count(); // Permite o comando $count
+            routes.Select(); // Permite o comando $select
         }
 
         /*

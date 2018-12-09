@@ -14,8 +14,6 @@ namespace WebApiLivraria.Dominio
         }
 
         [Key]
-        [Required(AllowEmptyStrings=false, ErrorMessage ="ISBN parametro obrigatorio")]
-        [StringLength(13)]
         public String ISBN { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Autor parametro obrigatorio")]

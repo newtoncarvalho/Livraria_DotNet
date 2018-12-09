@@ -9,7 +9,7 @@ using WebApiLivraria.Dominio;
 
 namespace WebApiLivraria.Controllers
 {
-    [EnableQuery(PageSize =20)]
+    [EnableQuery(PageSize =5)]
     public class LivrosController : ODataController
     {
         private readonly LivroDbContext livroDdContext;
@@ -36,7 +36,12 @@ namespace WebApiLivraria.Controllers
             }
 
             String key = livro.ISBN;
+            if (string.IsNullOrWhiteSpace(key))
+                return BadRequest("ISBN parametro obrigatorio");
 
+            if (key.Length > 13)
+                return BadRequest("Comprimento ISBN nao pode ser superior a 13 caracteres");
+         
             Livro livroPersistido = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
             if (livroPersistido != null)
                 return BadRequest("Ja existe um livro cadastrado para o ISBN informado");
@@ -52,15 +57,13 @@ namespace WebApiLivraria.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody]Livro livro)
+        public IActionResult Put([FromODataUri] String key, [FromBody]Livro livro)
         {
             // Analisa o objeto informado
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            String key = livro.ISBN;
 
             Livro livroPersistido = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
             if (livroPersistido == null)
@@ -70,20 +73,23 @@ namespace WebApiLivraria.Controllers
              * A entidade ja existe no Banco, Portanto ja estah (tracked) "amarrado" no
              * contexto de persistencia
              */
-            this.livroDdContext.Entry(livro).State = EntityState.Modified;
+
+            livroPersistido.Autor = livro.Autor;
+            livroPersistido.DataPublicacao = livro.DataPublicacao;
+            livroPersistido.Nome = livro.Nome;
+            livroPersistido.Preco = livro.Preco;
+
             this.livroDdContext.SaveChangesAsync();
 
             return Updated(livro);
         }
 
+        [HttpDelete]
         public IActionResult Delete([FromODataUri] String key)
         {
-            var livro = this.livroDdContext.Livros.FindAsync(key);
+            Livro livro = this.livroDdContext.Livros.FirstOrDefault(l => l.ISBN == key);
             if (livro == null)
-            {
-                return NotFound("Livro nao encontrado para o ISBN inforamado");
-            }
-
+                return NotFound("Livro nao encontrado para o ISBN informado");
 
             this.livroDdContext.Remove(livro);
             this.livroDdContext.SaveChangesAsync();
